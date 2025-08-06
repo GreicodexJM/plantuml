@@ -1,0 +1,8 @@
+name: plantuml
+description: A generated Helm Chart for plantuml from Skippbox Kompose
+version: 0.0.1
+apiVersion: v2
+keywords:
+  - plantuml
+sources:
+home:

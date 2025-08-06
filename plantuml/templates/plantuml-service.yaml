@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: /usr/bin/kompose --chart --provider=kubernetes --out=plantuml --namespace=plantuml --push-image --file=/src/docker-compose.yaml convert
+    kompose.service.expose: plantuml.dapp.greicodex.com
+    kompose.service.expose.ingress-class-name: nginx
+    kompose.service.expose.ingress.annotations: '{"cert-manager.io/issuer-ref": {"name": "letsencrypt-prod", "kind": "Issuer"}}'
+    kompose.service.expose.ingress.host: plantuml.dapp.greicodex.com
+    kompose.service.expose.tls-secret: letsencrypt-prod
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: plantuml
+  name: plantuml
+  namespace: plantuml
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.kompose.service: plantuml

@@ -1,0 +1,38 @@
+#version: '3.8'
+
+services:
+  plantuml:
+    container_name: plantuml-api
+    image: "${ORG_NAME:-greicodex}/${IMAGE_GROUP:-plantuml}:${IMAGE_TAG:-latest}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - fprocess=python /app/api.py
+      - SPACE_BUCKET=$SPACE_BUCKET
+      - SPACE_ACCESS_KEY=$SPACE_ACCESS_KEY
+      - SPACE_SECRET_KEY=$SPACE_SECRET_KEY
+    networks:
+      - functions
+    ports:
+      - ${INGRESS_PORT:-8080}:8080
+    deploy:
+      replicas: 1
+      resources:
+        reservations:
+          cpus: "0.01"
+          memory: 64M
+    labels:
+      # Tells Kompose you want an Ingress for this service
+      kompose.service.expose: "plantuml.dapp.greicodex.com"
+      # Optional: sets a domain/host for the Ingress
+      kompose.service.expose.ingress.host: "plantuml.dapp.greicodex.com"
+      # Optional: set a TLS secret name
+      kompose.service.expose.tls-secret: "letsencrypt-prod"
+      kompose.service.expose.ingress-class-name: "nginx"
+      kompose.service.expose.ingress.annotations: '{"cert-manager.io/issuer-ref": {"name": "letsencrypt-prod", "kind": "Issuer"}}'
+
+
+networks:
+  functions:
+    driver: bridge

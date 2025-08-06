@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /usr/bin/kompose --chart --provider=kubernetes --out=plantuml --namespace=plantuml --push-image --file=/src/docker-compose.yaml convert
+    kompose.service.expose: plantuml.dapp.greicodex.com
+    kompose.service.expose.ingress-class-name: nginx
+    kompose.service.expose.ingress.annotations: '{"cert-manager.io/issuer-ref": {"name": "letsencrypt-prod", "kind": "Issuer"}}'
+    kompose.service.expose.ingress.host: plantuml.dapp.greicodex.com
+    kompose.service.expose.tls-secret: letsencrypt-prod
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: plantuml
+  name: plantuml
+  namespace: plantuml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: plantuml
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /usr/bin/kompose --chart --provider=kubernetes --out=plantuml --namespace=plantuml --push-image --file=/src/docker-compose.yaml convert
+        kompose.service.expose: plantuml.dapp.greicodex.com
+        kompose.service.expose.ingress-class-name: nginx
+        kompose.service.expose.ingress.annotations: '{"cert-manager.io/issuer-ref": {"name": "letsencrypt-prod", "kind": "Issuer"}}'
+        kompose.service.expose.ingress.host: plantuml.dapp.greicodex.com
+        kompose.service.expose.tls-secret: letsencrypt-prod
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: plantuml
+    spec:
+      containers:
+        - env:
+            - name: fprocess
+              value: python /app/api.py
+          image: greicodex/plantuml:latest
+          name: plantuml-api
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 10m
+              memory: "67108864"
+      restartPolicy: Always

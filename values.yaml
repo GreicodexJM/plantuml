@@ -1,0 +1,15 @@
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  hosts:
+    - host: "your-tunnel-here.ngrok.io"  # or any domain accessible publicly
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+      - "your-tunnel-here.ngrok.io"
+      secretName: myapp-tls
+
