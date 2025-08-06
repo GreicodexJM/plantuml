@@ -2,5 +2,6 @@ dev-ops/.terraform.lock.hcl
 dev-ops/.terraform/
 dev-ops/terraform.tfstate
 dev-ops/terraform.tfstate.backup
+dev-ops/*.tfvars
 *.env
 k8s-serverless.yaml
