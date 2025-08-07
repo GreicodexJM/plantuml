@@ -31,4 +31,4 @@ jobs:
           context: .         # Use the current directory for the build context
           push: true         # Actually push the image
           tags: greicodex/plantuml:latest # The tag for the image
-          readme: ./README.md # Use the README.md file for the Docker Hub description
+          annotations: ./README.md # Use the README.md file for the Docker Hub description
