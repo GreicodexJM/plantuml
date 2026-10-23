@@ -35,6 +35,9 @@ spec:
         - env:
             - name: fprocess
               value: python /app/api.py
+            # Bloquea !include de archivos locales/URLs y %getenv fuera de PLANTUML_* (exfiltracion de secretos).
+            - name: PLANTUML_SECURITY_PROFILE
+              value: SANDBOX
             # kompose no traduce las interpolaciones $VAR de docker-compose.yaml;
             # estas quedan fijas aqui para que un reconvert no las vuelva a perder.
             - name: PLANTUML_JAR
