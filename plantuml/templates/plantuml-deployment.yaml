@@ -35,6 +35,26 @@ spec:
         - env:
             - name: fprocess
               value: python /app/api.py
+            # kompose no traduce las interpolaciones $VAR de docker-compose.yaml;
+            # estas quedan fijas aqui para que un reconvert no las vuelva a perder.
+            - name: PLANTUML_JAR
+              value: /app/plantuml.jar
+            - name: SPACE_REGION
+              value: nyc3
+            - name: SPACE_BUCKET
+              value: greicodex-website
+            - name: SPACE_FOLDER
+              value: diagrams
+            - name: SPACE_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: spaces-credentials
+                  key: SPACE_ACCESS_KEY
+            - name: SPACE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: spaces-credentials
+                  key: SPACE_SECRET_KEY
           image: greicodex/plantuml:latest
           name: plantuml-api
           ports:
